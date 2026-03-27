@@ -36,28 +36,22 @@ preprocess = transforms.Compose([
 def predict():
     if 'image' not in request.files:
         return jsonify({'error': 'Nicio imagine trimisa'}), 400
-
     file = request.files['image']
     image_bytes = file.read()
     image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-
     input_tensor = preprocess(image)
     input_batch = input_tensor.unsqueeze(0).to(device)
-
     with torch.no_grad():
         output = model(input_batch)
         probabilities = torch.nn.functional.softmax(output[0], dim=0)
-
     top_prob, top_catid = torch.max(probabilities, 0)
     prediction = class_names[top_catid]
     siguranta = top_prob.item() * 100
-
     try:
         termen_cautare = prediction.replace("_", " ")
         rezumat = wikipedia.summary(termen_cautare, sentences=3)
     except:
-        rezumat = f"Informații botanice despre {prediction} nu au putut fi încărcate."
-
+        rezumat = f"Descrierea botanică pentru {prediction} este în curs de actualizare."
     return jsonify({
         'planta': prediction.upper(),
         'siguranta': round(siguranta, 2),
