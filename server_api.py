@@ -56,7 +56,7 @@ def predict():
         termen_cautare = prediction.replace("_", " ")
         rezumat = wikipedia.summary(termen_cautare, sentences=3)
     except:
-        rezumat = f"Informații detaliate despre {prediction} nu au putut fi preluate momentan."
+        rezumat = f"Informații botanice despre {prediction} nu au putut fi încărcate."
 
     return jsonify({
         'planta': prediction.upper(),
