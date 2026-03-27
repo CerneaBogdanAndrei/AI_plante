@@ -1,0 +1,7 @@
+Flask==3.0.0
+flask-cors==4.0.0
+wikipedia==1.4.0
+Pillow==10.0.1
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
